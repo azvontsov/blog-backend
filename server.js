@@ -30,7 +30,7 @@ mongoose.connection
 const PostSchema = new mongoose.Schema({
   userId: Number,
   id: Number,
-  userId: Number,
+  hashtags: String,
   title: String,
   body: String,
 });
