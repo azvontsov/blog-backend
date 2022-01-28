@@ -30,9 +30,11 @@ mongoose.connection
 const PostSchema = new mongoose.Schema({
   userId: Number,
   id: Number,
-  hashtags: String,
+  tags: String,
   title: String,
   body: String,
+  likes: [String],
+  comments: [String],
 });
 
 const Post = mongoose.model("Posts", PostSchema);
@@ -54,11 +56,12 @@ app.get("/", (req, res) => {
 // async/await
 app.get("/posts", async (req, res) => {
   try {
-    res.json(await Post.find({}));
+    res.json(await Post.find({ limit: 5 }));
   } catch (error) {
     res.status(400).json(error);
   }
 });
+
 // POST CREATE ROUTE - POST
 app.post("/posts", async (req, res) => {
   try {
@@ -78,9 +81,7 @@ app.delete("/posts/:id", async (req, res) => {
 // POST UPDATE ROUTE - POST
 app.put("/posts/:id", async (req, res) => {
   try {
-    res.json(
-      await Post.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    );
+    res.json(await Post.findByIdAndUpdate(req.params.id, req.body));
   } catch (error) {
     res.status(400).json(error);
   }
